@@ -21,6 +21,9 @@ Plug 'leafgarland/typescript-vim'
 Plug 'Quramy/tsuquyomi'
 Plug 'w0rp/ale'
 
+" Copilot
+Plug 'github/copilot.vim'
+
 " Color schemes
 Plug 'jonathanfilip/vim-lucius'
 

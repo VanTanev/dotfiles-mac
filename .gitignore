@@ -4,6 +4,7 @@
 *.swp
 /.aws/credentials
 /.cdk
+/.docker
 /.zcomp*
 /.oh-my-zsh
 /.nvm

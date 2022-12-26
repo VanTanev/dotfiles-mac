@@ -101,7 +101,14 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 
+# Add paths
+export PATH=/usr/local/sbin:/usr/local/bin:${PATH}
+export PATH="$HOME/bin:$PATH"
 
+# Nicer history
+export HISTSIZE=100000
+export HISTFILE="$HOME/.history"
+export SAVEHIST=$HISTSIZE
 
 
 # Stop wget from creating ~/.wget-hsts file. I don't care about HSTS (HTTP
@@ -124,7 +131,6 @@ export WORDCHARS='*?[]~&;!$%^<>'
 # By default, ^S freezes terminal output and ^Q resumes it. Disable that so
 # that those keys can be used for other things.
 unsetopt flowcontrol
-
 
 
 export NVM_DIR="$HOME/.nvm"
