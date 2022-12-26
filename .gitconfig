@@ -1,0 +1,95 @@
+[user]
+    name = Ivan Tanev
+    email = vankata.t@gmail.com
+
+[color]
+    branch = auto
+    status = auto
+    diff   = auto
+    ui     = auto
+[branch]
+    autosetupmerge = true
+[color "branch"]
+    current = yellow reverse
+    local   = yellow
+    remote  = green
+[color "status"]
+    added    = yellow
+    changed = green
+    untracked = cyan
+
+[core]
+    whitespace=fix;-indent-with-non-tab,trailing-space,cr-at-eol
+    autocrlf = input
+    editor = vim
+
+[alias]
+    st  = status -sb
+    aa  = add --all
+    aaa  = add --all --intent-to-add
+    ci  = commit --verbose
+    co  = checkout
+    df  = diff
+    dfw = diff --word-diff
+    dc  = diff --cached
+    dcw = diff --cached --word-diff
+    logdiff = log -p --word-diff
+    alias = !git config --list | grep 'alias\\.' | sed 's/alias\\.\\([^=]*\\)=\\(.*\\)/\\1\\t=> \\2/' | sort
+    wip = for-each-ref --sort='authordate:iso8601' --format=' %(color:green)%(authordate:relative)%09%(color:white)%(refname:short)' refs/heads
+    amend = commit --amend
+    famend = !git log -n 1 --pretty=tformat:%s%n%n%b | git commit -F - --amend
+    ff  = merge --ff-only
+    pullff = pull --ff-only
+    noff = merge --no-ff
+    fp  = fetch --prune
+    fa  = fetch --all
+    po  = push origin
+    pof = push origin --force-with-lease
+    br  = branch
+    ds  = diff --stat=160,120
+    dh1 = diff HEAD~1
+    please = push --force-with-lease
+
+    # Search for a given string in all patches and print commit messages
+    # example: search for any commit that adds or removes string "foobar"
+    #     git searchcommits foobar
+    # example: search commits for string "foobar" in directory src/lib
+    #     git searchcommits foobar src/lib
+    # example: search commits for "foobar", print full diff of commit with 1 line context
+    #     git searchcommits foobar --pickaxe-all -U1 src/lib
+    searchcommits = "!f() { query=\"$1\"; shift; git log -S\"$query\" \"$@\"; }; f \"$@\""
+    # Divergence (commits we added and commits remote added)
+    div = divergence
+
+    # Goodness (summary of diff lines added/removed/total)
+    gn = goodness
+    gnc = goodness --cached
+
+    # Fancy logging.
+    #   h = head
+    #   hp = head with patch
+    #   r = recent commits, only current branch
+    #   ra = recent commits, all reachable refs
+    #   l = all commits, only current branch
+    #   la = all commits, all reachable refs
+    #   b = all branches
+    #   bs = all branches, sorted by last commit date
+    head = !git r -1
+    h = !git head
+    hp = "!. ~/.githelpers && show_git_head"
+    hpw = "!. ~/.githelpers && show_git_head --word-diff"
+    r = !GIT_NO_PAGER=1 git l -30
+    ra = !git r --all
+    l = "!. ~/.githelpers && pretty_git_log"
+    la = !git l --all
+    b = "!. ~/.githelpers && pretty_git_branch"
+    bs = "!. ~/.githelpers && pretty_git_branch_sorted"
+[gui]
+    encoding = utf-8
+[push]
+    default = upstream
+
+# Any GitHub repo with my username should be checked out r/w by default
+# http://rentzsch.tumblr.com/post/564806957/public-but-hackable-git-submodules
+[url "git@github.com:VanTanev/"]
+  insteadOf = "git://github.com/VanTanev/"
