@@ -2,6 +2,8 @@
 !/Library/KeyBindings
 *.swo
 *.swp
+/.aws/credentials
+/.cdk
 /.zcomp*
 /.oh-my-zsh
 /.nvm
