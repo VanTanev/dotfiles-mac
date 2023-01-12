@@ -31,7 +31,6 @@
 /.cache
 /.ccache
 /.certs
-/.config
 /.cups
 /.dropbox
 /.dropbox-master
@@ -156,8 +155,10 @@
 /var
 /work
 /writing
-.aws
-.tldr
-Calibre Library
-dev
+/.aws
+/.tldr
+/Calibre Library
+/dev
 .vim*.tmp
+/.config/github-copilot
+/.config/iterm2
