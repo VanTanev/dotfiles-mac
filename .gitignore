@@ -156,3 +156,8 @@
 /var
 /work
 /writing
+.aws
+.tldr
+Calibre Library
+dev
+.vim*.tmp

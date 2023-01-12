@@ -11,6 +11,7 @@ Plug 'tpope/vim-sensible' " sensible defaults
 Plug 'tpope/vim-sleuth' " shiftwidth and tabwidth management
 Plug 'slim-template/vim-slim' " color highlights
 Plug 'romainl/vim-cool' " better search instead of <CR>noh
+Plug 'tpope/vim-commentary' " multi-line comments
 
 " JavaScript
 Plug 'MaxMEllon/vim-jsx-pretty' " JSX highlgihting and formatting
