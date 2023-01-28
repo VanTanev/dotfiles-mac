@@ -287,6 +287,138 @@ function! RenameFile()
 endfunction
 map <leader>n :call RenameFile()<cr>
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" SWITCH BETWEEN TEST AND PRODUCTION CODE
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! OpenTestAlternate()
+  let new_file = AlternateForCurrentFile()
+  exec ':e ' . new_file
+endfunction
+function! AlternateForCurrentFile()
+  let current_file = expand("%")
+
+  if filereadable("bin/test_alternative_for_file")
+    let alt_file = system("bin/test_alternative_for_file " . current_file)
+    return alt_file
+  end
+
+  let is_js = match(current_file, '\.js$') != -1
+  let is_ts = match(current_file, '\.tsx\?$') != -1
+  let is_php = match(current_file, '\.php$') != -1
+  let is_rb = match(current_file, '\.e\?rb$') != -1
+
+  let in_test_file = match(current_file, '^spec/') != -1
+        \ || match(current_file, '\.spec\.js$') != -1
+        \ || match(current_file, 'Test\.php$') != -1
+        \ || match(current_file, '__tests__') != -1
+  let in_app_subdir = match(current_file, '\<controllers\>') != -1 || match(current_file, '\<models\>') != -1 || match(current_file, '\<views\>') != -1 || match(current_file, '\<helpers\>') != -1 || match(current_file, '\<service\>') != -1 || match(current_file, '<\extensions\>') != 1
+
+  let alt_file = current_file
+  if is_js
+    if in_test_file
+      let alt_file = substitute(alt_file, '\.spec\.js$', '.js', '')
+    else
+      let alt_file = substitute(alt_file, '\.js$', '.spec.js', '')
+    endif
+  elseif is_ts
+    if in_test_file
+      let alt_file = substitute(alt_file, '__tests__/', '', '')
+    else
+      let basename = expand('%:t:r') . '.' . expand('%:e')
+      let alt_file = substitute(alt_file, basename, '__tests__/' . basename, '')
+    endif
+  elseif is_php
+    if in_test_file
+      let alt_file = substitute(alt_file, 'tests/', '', '')
+      if in_app_subdir
+        let alt_file = 'app/' . alt_file
+      endif
+      let alt_file = substitute(alt_file, 'Test\.php$', '.php', '')
+    else
+      if in_app_subdir
+        let alt_file = substitute(alt_file, 'app/', '', '')
+      endif
+      let alt_file = 'tests/' . alt_file
+      let alt_file = substitute(alt_file, '\.php$', 'Test\.php', '')
+    endif
+  elseif is_rb
+    if in_test_file
+      let alt_file = substitute(alt_file, 'spec/', '', '')
+      if in_app_subdir
+        let alt_file = 'app/' . alt_file
+      endif
+      let alt_file = substitute(alt_file, '_spec\.rb$', '.rb', '')
+    else
+      if in_app
+        let alt_file = substitute(alt_file, 'app/', '', '')
+      endif
+      let alt_file = substitute(alt_file, '\.e\?rb$', '_spec.rb', '')
+      let alt_file = 'spec/' . alt_file
+    endif
+  endif
+
+  return alt_file
+endfunction
+nnoremap <leader>. :call OpenTestAlternate()<cr>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" RUNNING TESTS
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+nnoremap <leader>t :call RunTestFile()<cr>
+nnoremap <leader>T :call RunNearestTest()<cr>
+nnoremap <leader>a :call RunTests('')<cr>
+
+function! RunTestFile(...)
+    if a:0
+        let command_suffix = a:1
+    else
+        let command_suffix = ""
+    endif
+
+" Run the tests for the previously-marked file.
+    let in_test_file = match(expand("%"), '\(spec.\(tsx\=\|jsx\=\|rb\)\|_test.rb\|test_.*\.py\|_test.py\|.test.tsx*\|__tests__.*\.tsx\=\|__tests__.*\.jsx\=\)$') != -1
+    if in_test_file
+        call SetTestFile(command_suffix)
+    elseif !exists("t:grb_test_file")
+        return
+    end
+    call RunTests(t:grb_test_file)
+endfunction
+
+function! SetTestFile(command_suffix)
+    " Set the spec file that tests will be run for.
+    let t:grb_test_file=@% . a:command_suffix
+endfunction
+
+function! RunTests(filename)
+    " Write the file and run tests for the given filename
+    if expand("%") != ""
+      :w
+    end
+    " The file is executable; assume we should run
+    if executable(a:filename)
+      exec ":!./" . a:filename
+    " " Project-specific test scripts
+    " elseif filereadable("bin/test_single")
+    "   exec ":!bin/test_single " . a:filename
+    elseif filereadable("bin/test")
+      exec ":!bin/test " . a:filename
+    " Rspec binstub
+    elseif filereadable("bin/rspec")
+      exec ":!bin/rspec " . a:filename
+    " Fall back to a blocking test run with Bundler
+    elseif filereadable("bin/rspec")
+      exec ":!bin/rspec --color " . a:filename
+    elseif filereadable("Gemfile") && strlen(glob("spec/**/*.rb"))
+      exec ":!bundle exec rspec --color " . a:filename
+    elseif filereadable("Gemfile") && strlen(glob("test/**/*.rb"))
+      exec ":!bin/rails test " . a:filename
+    " If we see python-looking tests, assume they should be run with Nose
+    elseif strlen(glob("test/**/*.py") . glob("tests/**/*.py"))
+      exec "!nosetests " . a:filename
+    end
+endfunction
+
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Refactoring mappings
