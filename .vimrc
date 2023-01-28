@@ -470,21 +470,14 @@ endfunction
 
 nnoremap <leader>f :call SelectaFile(".", "*", ":edit")<cr>
 nnoremap <leader>F :call SelectaFileContents()<cr>
-nnoremap <leader>gv :call SelectaFile("app/views", "*", ":edit")<cr>
-nnoremap <leader>gc :call SelectaFile("app/controllers", "*", ":edit")<cr>
-nnoremap <leader>gm :call SelectaFile("app/models", "*", ":edit")<cr>
-nnoremap <leader>gh :call SelectaFile("app/helpers", "*", ":edit")<cr>
-nnoremap <leader>gl :call SelectaFile("lib", "*", ":edit")<cr>
-nnoremap <leader>gp :call SelectaFile("public", "*", ":edit")<cr>
-nnoremap <leader>gs :call SelectaFile("app/assets/stylesheets", "*.sass", ":edit")<cr>
 nnoremap <leader>e :call SelectaFile(expand('%:h'), "*", ":edit")<cr>
-nnoremap <leader>v :call SelectaFile(expand('%:h'), "*", ":view")<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Typescript Mappings
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 nnoremap <leader>d :TsuDefinition<cr>
 nnoremap <leader>D :TsuTypeDefinition<cr>
+nnoremap <leader>c :Copilot<cr>
 
 "Fuzzy select
 function! SelectaIdentifier()
