@@ -93,3 +93,9 @@
 # http://rentzsch.tumblr.com/post/564806957/public-but-hackable-git-submodules
 [url "git@github.com:VanTanev/"]
   insteadOf = "git://github.com/VanTanev/"
+[pull]
+	rebase = true
+[fetch]
+	prune = true
+[diff]
+	colorMoved = zebra
