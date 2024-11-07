@@ -142,3 +142,12 @@ export NVM_DIR="$HOME/.nvm"
 [[ -f ~/.config/tabtab/zsh/__tabtab.zsh ]] && . ~/.config/tabtab/zsh/__tabtab.zsh || true
 
 [[ -d /opt/homebrew/opt/mysql-client/bin ]] && export PATH="/opt/homebrew/opt/mysql-client/bin:$PATH"
+
+export AWS_PROFILE=holibob
+
+# bun completions
+[ -s "/Users/ivantanev/.bun/_bun" ] && source "/Users/ivantanev/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"

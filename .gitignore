@@ -165,3 +165,7 @@
 .vscode/
 .config/
 .actrc
+.bun
+.yarn
+holibob-worktree
+SynologyDrive
