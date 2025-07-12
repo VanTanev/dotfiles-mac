@@ -143,11 +143,17 @@ export NVM_DIR="$HOME/.nvm"
 
 [[ -d /opt/homebrew/opt/mysql-client/bin ]] && export PATH="/opt/homebrew/opt/mysql-client/bin:$PATH"
 
-export AWS_PROFILE=holibob
-
 # bun completions
 [ -s "/Users/ivantanev/.bun/_bun" ] && source "/Users/ivantanev/.bun/_bun"
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+# pnpm
+export PNPM_HOME="/Users/ivantanev/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
